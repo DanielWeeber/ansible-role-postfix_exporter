@@ -1,0 +1,10 @@
+[Unit]
+Description=PostfixExporter
+
+[Service]
+TimeoutStartSec=0
+User=postfix_exporter
+ExecStart={{ postfix_exporter_bin_path }} {{ postfix_exporter_options }}
+
+[Install]
+WantedBy=multi-user.target

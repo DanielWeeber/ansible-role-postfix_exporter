@@ -1,0 +1,5 @@
+---
+- name: restart postfix_exporter
+  service:
+    name: postfix_exporter
+    state: restarted

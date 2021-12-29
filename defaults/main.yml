@@ -1,0 +1,5 @@
+---
+postfix_exporter_bin_path: /usr/local/bin/postfix_exporter
+postfix_exporter_options: ''
+postfix_exporter_state: restarted
+postfix_exporter_enabled: true

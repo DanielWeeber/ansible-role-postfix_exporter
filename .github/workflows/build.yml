@@ -36,13 +36,25 @@ jobs:
 
       - name: Build
         run: |
+          echo "pwd1"
+          pwd
+          ls .
           cd builddir
           go build -tags nosystemd .
+          echo "pwd2"
+          pwd
+          ls .
 
       - name: Commit files
         run: |
+          echo "pwd3"
+          pwd
+          ls .
           mv builddir/postfix_exporter ./files
           cd ./
+          echo "pwd4"
+          pwd
+          ls .
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add -f files/postfix_exporter

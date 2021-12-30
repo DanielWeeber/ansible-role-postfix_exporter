@@ -52,7 +52,9 @@ jobs:
           ls .
           echo "pwd builddir"
           ls builddir/
+          mkdir -p ./files
           mv builddir/postfix_exporter ./files
+          rm -rf builddir/
           cd ./
           echo "pwd files"
           ls files/

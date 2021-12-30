@@ -54,6 +54,8 @@ jobs:
           ls builddir/
           mv builddir/postfix_exporter ./files
           cd ./
+          echo "pwd files"
+          ls files/
           echo "pwd4"
           pwd
           ls .

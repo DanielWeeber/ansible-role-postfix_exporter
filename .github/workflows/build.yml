@@ -50,6 +50,8 @@ jobs:
           echo "pwd3"
           pwd
           ls .
+          echo "pwd builddir"
+          ls builddir/
           mv builddir/postfix_exporter ./files
           cd ./
           echo "pwd4"

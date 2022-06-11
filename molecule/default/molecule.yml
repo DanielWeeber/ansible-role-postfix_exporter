@@ -1,0 +1,24 @@
+---
+dependency:
+  name: shell
+  command: pip3 install ansible-lint yamllint
+driver:
+  name: docker
+platforms:
+  - name: instance
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-ubuntu2004}-ansible:latest"
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: true
+    pre_build_image: true
+provisioner:
+  name: ansible
+  playbooks:
+    converge: ${MOLECULE_PLAYBOOK:-converge.yml}
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
+verifier:
+  name: ansible

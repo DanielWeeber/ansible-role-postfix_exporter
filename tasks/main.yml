@@ -1,35 +1,42 @@
 ---
-- name: Check current postfix_exporter version.
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: Check whether postfix is installed
+  fail:
+    msg: "Please install Postfix first."
+  when: ansible_facts.packages['postfix'] | length != 1
+
+- name: Check current postfix_exporter version
   command: "{{ postfix_exporter_bin_path }} --version"
   failed_when: false
   changed_when: false
   register: postfix_exporter_version_check
 
-- name: copy postfix_exporter into location
-  copy:
-    src: postfix_exporter
-    dest: /usr/local/bin/postfix_exporter
-    owner: postfix_exporter
-    group: root
-    mode: '0770'
-  when: >
-    postfix_exporter_version_check.stdout is not defined
-
-- name: Create postfix_exporter user.
+- name: Create postfix_exporter user
   user:
     name: postfix_exporter
     groups: postfix, postdrop, adm
     shell: /sbin/nologin
     state: present
 
+- name: Copy postfix_exporter into location
+  copy:
+    src: files/postfix_exporter
+    dest: /usr/local/bin/postfix_exporter
+    owner: postfix_exporter
+    group: root
+    mode: '0770'
+  when: postfix_exporter_version_check.stdout | length == 0
 
-- name: Copy the postfix_exporter systemd unit file.
+- name: Copy the postfix_exporter systemd unit file
   template:
     src: postfix_exporter.service.j2
     dest: /etc/systemd/system/postfix_exporter.service
   register: postfix_exporter_service
 
-- name: Reload systemd daemon if unit file is changed.
+- name: Reload systemd daemon if unit file is changed
   systemd:
     daemon_reload: true
   notify: restart postfix_exporter
@@ -41,7 +48,7 @@
     state: "{{ postfix_exporter_state }}"
     enabled: "{{ postfix_exporter_enabled }}"
 
-- name: Verify postfix_exporter is responding to requests.
+- name: Verify postfix_exporter is responding to requests
   uri:
     url: http://localhost:9154
     return_content: true

@@ -1,10 +1,11 @@
-[![CI](https://github.com/DanielWeeber/ansible-role-postfix_exporter/actions/workflows/release.yml/badge.svg?branch=master)](https://github.com/DanielWeeber/ansible-role-postfix_exporter/actions/workflows/release.yml)
+[![CI](https://github.com/DanielWeeber/ansible-role-postfix_exporter/actions/workflows/release.yml/badge.svg?branch=master)](https://github.com/DanielWeeber/ansible-role-postfix_exporter/actions/workflows/release.yml) ![CI Pipeline](https://github.com/DanielWeeber/ansible-role-postfix_exporter/actions/workflows/ci.yml/badge.svg)
+
 
 # Ansible Role: postfix exporter
 
 This role installs Prometheus' [postfix exporter](https://github.com/kumina/postfix_exporter) on postfix hosts.
 
-## Go Build
+## Why?
 
 As kumina only has the sourcecode available I've set up a GitHub Action CI to automatically build the postfix_exporter binary every monday. Binary will be stored in files/ and is used by the ansible role.
 
@@ -16,7 +17,7 @@ Available variables are listed below, along with default values (see `defaults/m
 
 Any additional options to pass to `postfix_exporter` when it starts.
 
-    postfix_exporter_state: restarted
+    postfix_exporter_state: started
     postfix_exporter_enabled: true
 
 Controls for the `postfix_exporter` service.

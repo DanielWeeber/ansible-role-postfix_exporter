@@ -1,5 +1,7 @@
+---
 name: Ansible Galaxy Release
 
+# yamllint disable-line rule:truthy
 on:
   - push
 

@@ -1,0 +1,38 @@
+---
+- name: Converge
+  hosts: all
+
+  pre_tasks:
+    - name: Install Postfix dependency for molecule docker container
+      package:
+        name: postfix
+        state: present
+        update_cache: true
+
+    - name: Fix postfix config for converge container
+      lineinfile:
+        path: /etc/postfix/main.cf
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      with_items:
+        # yamllint disable-line rule:braces
+        - { regexp: '^inet_protocols = all', line: 'inet_protocols = ipv4' }
+      when: ansible_facts.os_family == 'RedHat'
+
+    - name: Touch file as RedHat does not create mail.log immediately
+      file:
+        path: /var/log/mail.log
+        state: touch
+        owner: postfix
+        group: postfix
+        modification_time: preserve
+        access_time: preserve
+      when: ansible_facts.os_family == 'RedHat'
+
+    - name: make sure postfix is started
+      service:
+        name: postfix
+        state: started
+
+  roles:
+    - role: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') | basename }}"

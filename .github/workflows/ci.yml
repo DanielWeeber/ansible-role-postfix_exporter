@@ -1,0 +1,39 @@
+---
+name: CI
+'on':
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+
+  test:
+    name: Molecule
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        distro:
+          - ubuntu2004
+          - centos8
+
+    steps:
+      - name: Check out the codebase.
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install test dependencies.
+        # yamllint disable-line rule:line-length
+        run: pip3 install ansible yamllint ansible-lint ansible molecule[docker] docker
+
+      - name: Run Molecule tests.
+        run: molecule test
+        env:
+          PY_COLORS: '1'
+          ANSIBLE_FORCE_COLOR: '1'
+          MOLECULE_DISTRO: ${{ matrix.distro }}

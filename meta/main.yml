@@ -3,6 +3,7 @@ dependencies: []
 galaxy_info:
   author: Daniel Weeber
   role_name: postfix_exporter
+  namespace: danielweeber
   description: Prometheus' postfix_exporter for Linux hosts.
   license: license (MIT)
   min_ansible_version: 2.7
